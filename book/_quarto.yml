@@ -3,18 +3,18 @@ project:
   output-dir: docs
 
 book:
-  title: "Python 2023"
+  title: "Django 2023"
   author: "Diego Saavedra"
-  output-file: "curso_python_2023"  
+  output-file: "curso_django_2023"  
   date: today
   date-format: medium
   favicon: python-logo.png
-  description: Este libro de Python te llevará desde los conceptos iniciales hasta la creación de aplicaciones prácticas con Frameworks como Django, Flask, Fast Api, PyScript y Regex. Apto para principiantes, aprenderás a programar y desarrollar proyectos reales con Bases de datos, APIs y más.
-  keyword: Python, Programación, Fundamentos, Aplicaciones Prácticas, Instalación, Herramientas, API, Django Rest Framework, Bases de Datos, PostgreSQL, MongoDB, Control de Flujo, Funciones, Clases, Herencia, Módulos, Aprendizaje, Principiantes, Proyectos, Desarrollo Web, Django, Flask, Data Science, FastAPI, Práctica, Enseñanza, Gratis, Internet, Contribuir
+  description: El Curso Completo de Django te llevará desde los conceptos fundamentales hasta la creación práctica de un blog funcional. Con una combinación de teoría y proyectos prácticos, explorarás desde la configuración inicial hasta el despliegue en Azure. Diseñado tanto para principiantes como para aquellos que desean mejorar sus habilidades con Django, este curso ofrece una base sólida para la construcción de aplicaciones web robustas. ¡Embárcate en este emocionante viaje de aprendizaje en el mundo del desarrollo web con Django!
+  keyword: Django, Desarrollo web, Python, Framework de desarrollo, Modelos y bases de datos, Vistas y plantillas, Autenticación y autorización, Docker, Despliegue en Azure, Git/GitHub, Programación web con Python, Creación de blogs con Django, Django Rest Framework, Contenedores, Sistema de control de versiones, Virtualización, Curso de desarrollo web, Proyecto educativo, Recurso gratuito, Contribuciones en GitHub.
   url: https://github.com/statick88/Course_of_python
   page-navigation: true
   sidebar: 
-    logo: python-logo.png
+    logo: \images\django-img.png
     search: true
     collapse-level: 1
 
@@ -35,19 +35,19 @@ book:
         
   chapters:
     - index.qmd
-    - part: "Unidad 0: Git y Github"
+    - part: "Git y Github"
       chapters: 
         - unidades/unidad0/unidad0.qmd
-    - part: "Unidad 1: Introducción a Django"
+    - part: "Introducción a Django"
       chapters: 
         - unidades/unidad1/unidad1.qmd
-    - part: "Unidad 2: Introducción a Django"
+    - part: "Modelos y Bases de Datos"
       chapters: 
         - unidades/unidad2/unidad2.qmd
-    - part: "Unidad 3: Vistas y Plantillas"
+    - part: "Vistas y Plantillas"
       chapters: 
         - unidades/unidad3/unidad3.qmd
-    - part: "Unidad 5: Docker"
+    - part: "Docker"
       chapters: 
         - unidades/unidad5/unidad5.qmd
 bibliography: references.bib

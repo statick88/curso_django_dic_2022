@@ -21,7 +21,7 @@ en la página web.
 
 Flujo básico de git.
 
-![](images/4f2dcf907fb94594a3776525a5ac7bd5.png)
+![](images\gitAndGithub.png)
 
 En la imágen anterior se describe el proceso básico para pasar de
 **Local** a **Stage**, de **Stage** a **Commit** y de **Commit** a
