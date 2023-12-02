@@ -41,7 +41,15 @@ book:
     - part: "Unidad 1: Introducción a Django"
       chapters: 
         - unidades/unidad1/unidad1.qmd
-
+    - part: "Unidad 2: Introducción a Django"
+      chapters: 
+        - unidades/unidad2/unidad2.qmd
+    - part: "Unidad 3: Vistas y Plantillas"
+      chapters: 
+        - unidades/unidad3/unidad3.qmd
+    - part: "Unidad 5: Docker"
+      chapters: 
+        - unidades/unidad5/unidad5.qmd
 bibliography: references.bib
 biblio-style: "apalike"
 
