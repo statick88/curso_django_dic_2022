@@ -1,5 +1,156 @@
 # Módulo 3: Vistas y Plantillas.
 
+## Configuración del Proyecto Django
+
+Primero, asegúrate de tener Django instalado:
+
+```bash
+pip install django
+```
+Luego, crea un nuevo proyecto y una aplicación dentro de ese proyecto:
+
+```bash
+django-admin startproject myblog
+cd myblog
+python manage.py startapp blog
+```
+2. Definir Modelos y Configurar la Base de Datos
+
+En el archivo blog/models.py, define un modelo simple para las publicaciones del blog:
+
+```python
+from django.db import models
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    date_posted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+```
+No olvides agregar 'blog' a la lista de INSTALLED_APPS en myblog/settings.py.
+
+Aplica las migraciones para crear la base de datos:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+3. Crear Vistas y Plantillas
+
+En blog/views.py, crea una vista para mostrar las publicaciones del blog:
+
+```python
+from django.shortcuts import render
+from .models import Post
+
+def home(request):
+    posts = Post.objects.all()
+    return render(request, 'blog/home.html', {'posts': posts})
+```
+Crea el archivo de plantilla blog/templates/blog/home.html:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Blog</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #333;
+            padding: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .post {
+            background-color: #fff;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h2>My Blog</h2>
+</div>
+
+<div class="content">
+    {% for post in posts %}
+        <div class="post">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.content }}</p>
+            <p>Posted on: {{ post.date_posted }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="footer">
+    <p>&copy; 2023 My Blog. All rights reserved.</p>
+</div>
+
+</body>
+</html>
+```
+4. Configurar URLs
+
+En blog/urls.py, define las URLs para tu aplicación:
+
+```python
+from django.urls import path
+from .views import home
+
+urlpatterns = [
+    path('', home, name='blog-home'),
+]
+```
+Incluye estas URLs en el archivo myblog/urls.py:
+
+```python
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('blog.urls')),
+]
+```
+5. Ejecutar la Aplicación
+
+Finalmente, ejecuta tu aplicación Django:
+
+```bash
+python manage.py runserver
+```
+Visita http://localhost:8000 en tu navegador y deberías ver tu blog con un Navbar, la visualización de publicaciones y un Footer, todo con un diseño atractivo.
+
+---
+
 ## Creación de Vistas en Django
 
 Las vistas en Django son funciones que procesan las solicitudes del
