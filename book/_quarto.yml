@@ -47,6 +47,9 @@ book:
     - part: "Vistas y Plantillas"
       chapters: 
         - unidades/unidad3/unidad3.qmd
+    - part: "Django Rest Framework"
+      chapters: 
+        - unidades/unidad4/unidad4.qmd
     - part: "Docker"
       chapters: 
         - unidades/unidad5/unidad5.qmd

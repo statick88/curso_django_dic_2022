@@ -1,0 +1,199 @@
+# Módulo 4: Django Rest Framework.
+
+## Django Rest Framework (DRF)
+
+::: justify
+
+Django Rest Framework es una potente y flexible herramienta para construir Web APIs. Utiliza principios basados en Django y hace que sea fácil construir APIs web de manera rápida y con menos código. DRF proporciona una variedad de características, incluyendo autenticación, autorización, navegación por el navegador, serialización de modelos y vistas basadas en clases para simplificar el desarrollo de APIs RESTful.
+:::
+## Serialización
+
+La serialización en DRF es el proceso de convertir complejas estructuras de datos, como objetos de modelos de Django, en tipos de datos que se pueden representar como JSON u otros formatos. DRF ofrece potentes clases de serialización que permiten definir cómo los datos deben ser convertidos a un formato específico.
+
+## Ejemplos
+
+1. Creación de un Serializador:
+
+``` python
+from rest_framework import serializers
+from .models import Post
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'content', 'created_at']
+```
+2. Vista basada en clase para listar y crear publicaciones:
+
+``` python
+from rest_framework import generics
+from .models import Post
+from .serializers import PostSerializer
+
+class PostListCreateView(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+```
+3. Configuración de URL para la API:
+
+``` python
+# blog/urls.py
+from django.urls import path
+from .views import PostListCreateView
+
+app_name = 'blog'
+
+urlpatterns = [
+    path('api/posts/', PostListCreateView.as_view(), name='post-list-create'),
+]
+```
+## Actividad Práctica
+
+**Objetivo:** Crear una nueva API para gestionar comentarios en las publicaciones.
+
+Pasos:
+
+1. Crear un modelo Comment con campos como author, text, y created_at.
+
+2. Crear un serializador para el modelo Comment.
+
+3. Crear una vista basada en clase para listar y crear comentarios.
+
+4. Configurar una nueva URL para la API de comentarios.
+
+<details>
+    <summary>Resolución de la Actividad Práctica</summary>
+
+1. Modelo Comment en models.py:
+
+``` python
+from django.db import models
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.CharField(max_length=100)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+```
+2. Serializador para Comment en serializers.py:
+
+``` python
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['id', 'author', 'text', 'created_at']
+```
+3. Vista basada en clase para listar y crear comentarios:
+
+``` python
+class CommentListCreateView(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+```
+4. Configuración de URL para la API de comentarios en blog/urls.py:
+
+``` python
+urlpatterns = [
+    # ... otras URL ...
+    path('api/comments/', CommentListCreateView.as_view(), name='comment-list-create'),
+]
+```
+## Lo que Aprendimos
+
+- Implementar una API básica con Django Rest Framework.
+- Crear modelos y serializadores para representar datos en formato JSON.
+- Utilizar vistas basadas en clase para manejar operaciones CRUD en la API.
+- Configurar URL para acceder a los recursos de la API.
+
+---
+
+## Documentación de API con DRF-YASG
+
+::: justify
+DRF-YASG es una herramienta que genera automáticamente la interfaz de usuario de Swagger para las APIs de Django Rest Framework. Proporciona una forma interactiva y fácil de explorar y probar las diferentes rutas y operaciones disponibles en tu API. A continuación, se muestra cómo integrar DRF-YASG en tu proyecto Django Rest Framework.
+Instalación de DRF-YASG
+
+:::
+
+Primero, instala la biblioteca DRF-YASG utilizando pip:
+
+``` bash
+pip install drf-yasg
+```
+## Configuración en settings.py
+
+Agrega 'drf_yasg' y 'rest_framework.authtoken' a tus INSTALLED_APPS en settings.py:
+
+``` python
+INSTALLED_APPS = [
+    # ... otras aplicaciones ...
+    'rest_framework',
+    'drf_yasg',
+]
+```
+## Configuración de DRF en settings.py
+
+Asegúrate de tener la configuración adecuada para Django Rest Framework:
+
+``` python
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
+```
+
+### Configuración de DRF-YASG en urls.py
+
+Agrega las URL de DRF-YASG a tu archivo urls.py:
+
+``` python
+from django.conf import settings
+from django.conf.urls import url
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Django Rest Framework API",
+        default_version='v1',
+        description="Documentación de la API",
+        terms_of_service="https://www.yourapp.com/terms/",
+        contact=openapi.Contact(email="contact@yourapp.com"),
+        license=openapi.License(name="Your License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('blog.urls')),  
+    url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+]
+
+# Agrega estas líneas para servir archivos estáticos durante el desarrollo
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+## Uso de la Interfaz de Usuario de Swagger
+
+::: justify
+Con estas configuraciones, puedes acceder a la interfaz de usuario de Swagger en la URL [http://localhost:8000/swagger/](http://localhost:8000/swagger/). 
+
+Aquí, podrás explorar, probar y entender mejor tu API con la ayuda de una interfaz gráfica fácil de usar.
+
+## Conclusión
+
+- DRF-YASG es una herramienta valiosa para mejorar la documentación y la experiencia del usuario al interactuar con tu 
+- API. Asegúrate de actualizar y personalizar la información en Info según las necesidades específicas de tu proyecto.
+:::
