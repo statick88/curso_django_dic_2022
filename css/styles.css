@@ -13,10 +13,10 @@
   height: 100%;
 }
 
-.center {
-  text-align: center;
+justify {
+  text-align: justify;
 }
 
-.justify {
-  text-align: justify;
+center {
+  text-align: center;
 }
